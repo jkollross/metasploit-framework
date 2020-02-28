@@ -36,7 +36,7 @@ module Metasploit
                 def try_credential(credential)
                     res = send_request({
                         'method' => 'POST',
-                        'uri' => normalize_uri("#{uri}management/index.php",
+                        'uri' => normalize_uri("#{uri}management/index.php"),
                         'vars_post' => {
                             'uname' => credential.public,
                             'upass' => credential.private,

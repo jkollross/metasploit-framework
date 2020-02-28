@@ -11,9 +11,9 @@ class MetasploitModule < Msf::Auxiliary
     include Msf::Auxiliary::AuthBrute
     include Msf::Auxiliary::Report
     include Msf::Auxiliary::Scanner
-    
+
     def initialize(info={})
-        super(update_info(info,
+        super(update_info(info,{
             'Name' => 'FOG Web Interface Login',
             'Description' => '%q{
                 Attempt to log in to the FOG web interface.
@@ -23,7 +23,8 @@ class MetasploitModule < Msf::Auxiliary
             'DefaultOptions' => {
                 'RPORT' => 80,
                 'SSL' => false,
-            }))
+            }
+        }))
     end
 
     def scanner(ip)
@@ -86,8 +87,9 @@ class MetasploitModule < Msf::Auxiliary
                     proof: result.proof
                 )
             end
+        end
     end
-    
+
     def run_host(ip)
         unless scanner(ip).check_setup
             print_brute(:level => :error, :ip => ip, :msg => 'Incorrect Target')
