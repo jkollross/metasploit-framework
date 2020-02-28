@@ -51,7 +51,7 @@ module Metasploit
                                 proof: "Unable to connect."
                         }
                     end
-                    if res.headers['Location'] && res.headers['Location'] == '/broadweb/bwproj.asp'
+                    if res.body.include?('Dashboard')
                         return {
                             status: Metasploit::Model::Login::Status::SUCCESSFUL, 
                             proof: res.body
