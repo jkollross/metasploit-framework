@@ -42,7 +42,7 @@ module Metasploit
                             'upass' => credential.private,
                             'ulang' => "English",
                             'login' => ''
-                        }
+                        },
                         'cookie' => get_session_id
                     })
                     unless res
@@ -51,7 +51,7 @@ module Metasploit
                                 proof: "Unable to connect."
                         }
                     end
-                    if res.body.include?('Dashboard')
+                    if res && res.headers['Location'].include?("node=home")
                         return {
                             status: Metasploit::Model::Login::Status::SUCCESSFUL, 
                             proof: res.body
@@ -65,6 +65,7 @@ module Metasploit
 
                 def get_session_id
                     @session_id ||= lambda {
+                        dlog("Getting new PHP Session ID. This should only happen once.")
                         res = send_request({'uri' => normalize_uri("#{uri}management/index.php")})
                         return '' unless  res
                         @session_id = res.get_cookies.scan(/(PHPSESSID=\w+);*/).flatten[0] || ''

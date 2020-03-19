@@ -3,7 +3,7 @@
 # Current source: https://github.com/rapid7/metasploit-framework
 ##
 
-require 'metasploit/framework/login_scanner/symantec_web_gateway'
+require 'metasploit/framework/login_scanner/fog_web_interface'
 require 'metasploit/framework/credential_collection'
 
 class MetasploitModule < Msf::Auxiliary
@@ -13,18 +13,18 @@ class MetasploitModule < Msf::Auxiliary
     include Msf::Auxiliary::Scanner
 
     def initialize(info={})
-        super(update_info(info,{
+        super(update_info(info,
             'Name' => 'FOG Web Interface Login',
-            'Description' => '%q{
+            'Description' => %q{
                 Attempt to log in to the FOG web interface.
-            }',
-            'Author' => [ 'jkollross' ]
+            },
+            'Author' => [ 'jkollross' ],
             'License' => MSF_LICENSE,
             'DefaultOptions' => {
                 'RPORT' => 80,
                 'SSL' => false,
             }
-        }))
+        ))
     end
 
     def scanner(ip)
