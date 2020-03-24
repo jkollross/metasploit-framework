@@ -34,15 +34,20 @@ module Metasploit
                 end
 
                 def try_credential(credential)
-                    res = send_request({
+                    send_request({
                         'method' => 'POST',
-                        'uri' => normalize_uri("#{uri}management/index.php"),
+                        'uri' => normalize_uri("#{uri}management/index.php?node=home"),
                         'vars_post' => {
                             'uname' => credential.public,
                             'upass' => credential.private,
                             'ulang' => "English",
-                            'login' => ''
+                            'login' => ""
                         },
+                        'cookie' => get_session_id
+                    })
+                    res = send_request({
+                        'method' => 'GET',
+                        'uri' => normalize_uri("#{uri}management/index.php?node=home"),
                         'cookie' => get_session_id
                     })
                     unless res
@@ -51,7 +56,7 @@ module Metasploit
                                 proof: "Unable to connect."
                         }
                     end
-                    if res && res.headers['Location'].include?("node=home")
+                    if res && res.body.include?("Dashboard")
                         return {
                             status: Metasploit::Model::Login::Status::SUCCESSFUL, 
                             proof: res.body
